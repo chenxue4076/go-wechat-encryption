@@ -1,2 +1,3 @@
-# Go_Wechat_Message_encryption
-微信公众号开发Go语言实现
+# 微信公众号开发Go语言实现
+
+#### 开发中

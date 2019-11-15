@@ -1,4 +1,4 @@
-package messageEncryption
+package msg_encrypt
 
 /**
  * error code 说明.

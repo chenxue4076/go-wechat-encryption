@@ -1,7 +1,7 @@
 package main
 
 import (
-	wxMsgCrypt "./messageEncryption"
+
 	"encoding/xml"
 	"fmt"
 )

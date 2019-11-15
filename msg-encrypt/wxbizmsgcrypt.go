@@ -1,4 +1,4 @@
-package messageEncryption
+package msg_encrypt
 
 import (
 	"crypto/sha1"

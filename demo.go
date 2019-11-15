@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./msg-encrypt"
+	"github.com/chenxue4076/go-wechat-encryption/msg-encrypt"
 	"encoding/xml"
 	"fmt"
 )

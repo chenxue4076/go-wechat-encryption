@@ -1,9 +1,9 @@
-package msg_encrypt
+package go_wechat_encryption
 
 import (
-	cryptoRand "crypto/rand"
 	"crypto/aes"
 	"crypto/cipher"
+	cryptoRand "crypto/rand"
 	"fmt"
 	"io"
 	"math/rand"

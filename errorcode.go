@@ -1,4 +1,4 @@
-package msg_encrypt
+package go_wechat_encryption
 
 /**
  * error code 说明.

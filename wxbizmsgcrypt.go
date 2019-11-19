@@ -48,9 +48,9 @@ type MsgEncryptFormat struct {
  * @param string $xmltext 待提取的xml字符串
  * @return string 提取出的加密消息字符串
  */
-func XmlParseExtract(xmlText string) (errCode int, encrypt string, toUserName string) {
+func XmlParseExtract(xmlText []byte) (errCode int, encrypt string, toUserName string) {
 	msgFormat := MsgFormat{}
-	err := xml.Unmarshal([]byte(xmlText), &msgFormat)
+	err := xml.Unmarshal(xmlText, &msgFormat)
 	if err != nil {
 		errCode = WXBizMsgCryptParseXmlError
 		return
@@ -68,14 +68,14 @@ func XmlParseExtract(xmlText string) (errCode int, encrypt string, toUserName st
  * @param string $timestamp 时间戳
  * @param string $nonce 随机字符串
  */
-func XmlParseGenerate(encrypt, signature, timestamp, nonce string) string  {
+func XmlParseGenerate(encrypt, signature, timestamp, nonce string) []byte  {
 	AesTextResponseTemplate := `<xml>
 <Encrypt><![CDATA[%s]]></Encrypt>
 <MsgSignature><![CDATA[%s]]></MsgSignature>
 <TimeStamp>%s</TimeStamp>
 <Nonce><![CDATA[%s]]></Nonce>
 </xml>`
-	return fmt.Sprintf(AesTextResponseTemplate, encrypt, signature, timestamp, nonce)
+	return []byte(fmt.Sprintf(AesTextResponseTemplate, encrypt, signature, timestamp, nonce))
 }
 
 /**
@@ -111,7 +111,7 @@ func Default(token, encodingAesKey, appId string) *WXBizMsgCrypt {
  *
  * @return int 成功0，失败返回对应的错误码
  */
-func (wx *WXBizMsgCrypt)EncryptMsg(replyMsg, timeStamp, nonce string ) (encryptMsg string, errorCode int) {
+func (wx *WXBizMsgCrypt)EncryptMsg(replyMsg, timeStamp, nonce string ) (encryptMsg []byte, errorCode int) {
 	pc := PrpcryptDefault(wx.encodingAesKey)
 	encryptBytes, errorCode := pc.Encrypt(replyMsg, wx.appId)
 	if errorCode != WXBizMsgCryptOK {
@@ -139,7 +139,7 @@ func (wx *WXBizMsgCrypt)EncryptMsg(replyMsg, timeStamp, nonce string ) (encryptM
  *
  * @return int 成功0，失败返回对应的错误码
  */
-func (wx *WXBizMsgCrypt) DecryptMsg(msgSignature, timeStamp, nonce, postData string) (msg []byte, errorCode int) {
+func (wx *WXBizMsgCrypt) DecryptMsg(msgSignature, timeStamp, nonce string, postData []byte) (msg []byte, errorCode int) {
 	if len(wx.encodingAesKey) != 43 {
 		errorCode = WXBizMsgCryptIllegalAesKey
 		return

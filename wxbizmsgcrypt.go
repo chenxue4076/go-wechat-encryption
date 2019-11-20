@@ -43,7 +43,23 @@ type MsgEncryptFormat struct {
 	Nonce			string		`xml:"Nonce"`
 }
 
-type MsgDecryptFormatText struct {
+//用户向微信发送的事件
+type MsgDecryptFormatEvent struct {
+	ToUserName		string		`xml:"ToUserName"`
+	FromUserName	string		`xml:"FromUserName"`
+	CreateTime		string		`xml:"CreateTime"`
+	MsgType			string		`xml:"MsgType"`
+	Content			string		`xml:"Content"`		//文本消息
+	MsgId			string		`xml:"MsgId"`		//文本消息
+	Event			string		`xml:"Event"`		//非文本时含有
+	EventKey		string		`xml:"EventKey"`	//扫二维码带此参数
+	Ticket			string		`xml:"Ticket"`		//扫二维码带此参数
+	Latitude		float64		`xml:"Latitude"`	//地理位置
+	Longitude		float64		`xml:"Longitude"`	//地理位置
+	Precision		float64		`xml:"Precision"`	//地理位置
+}
+//本地服务器返回给微信服务器的消息格式
+type MsgReplyFormatText struct {
 	ToUserName		string		`xml:"ToUserName"`
 	FromUserName	string		`xml:"FromUserName"`
 	CreateTime		string		`xml:"CreateTime"`
@@ -51,52 +67,48 @@ type MsgDecryptFormatText struct {
 	Content			string		`xml:"Content"`
 }
 
-type MsgDecryptFormatImage struct {
+type MsgReplyFormatImage struct {
 	ToUserName		string		`xml:"ToUserName"`
 	FromUserName	string		`xml:"FromUserName"`
 	CreateTime		string		`xml:"CreateTime"`
 	MsgType			string		`xml:"MsgType"`
 	Image			[]MsgFormatImage	`xml:"Image"`
 }
-
 type MsgFormatImage struct {
 	MediaId			string		`xml:"MediaId"`
 }
 
-type MsgDecryptFormatVoice struct {
+type MsgReplyFormatVoice struct {
 	ToUserName		string		`xml:"ToUserName"`
 	FromUserName	string		`xml:"FromUserName"`
 	CreateTime		string		`xml:"CreateTime"`
 	MsgType			string		`xml:"MsgType"`
 	Voice			[]MsgFormatVoice	`xml:"Voice"`
 }
-
 type MsgFormatVoice struct {
 	MediaId			string		`xml:"MediaId"`
 }
 
-type MsgDecryptFormatVideo struct {
+type MsgReplyFormatVideo struct {
 	ToUserName		string		`xml:"ToUserName"`
 	FromUserName	string		`xml:"FromUserName"`
 	CreateTime		string		`xml:"CreateTime"`
 	MsgType			string		`xml:"MsgType"`
 	Video			[]MsgFormatVideo	`xml:"Video"`
 }
-
 type MsgFormatVideo struct {
 	MediaId			string		`xml:"MediaId"`
 	Title			string		`xml:"Title"`
 	Description		string		`xml:"Description"`
 }
 
-type MsgDecryptFormatMusic struct {
+type MsgReplyFormatMusic struct {
 	ToUserName		string		`xml:"ToUserName"`
 	FromUserName	string		`xml:"FromUserName"`
 	CreateTime		string		`xml:"CreateTime"`
 	MsgType			string		`xml:"MsgType"`
 	Music			[]MsgFormatMusic	`xml:"Music"`
 }
-
 type MsgFormatMusic struct {
 	Title			string		`xml:"Title"`
 	Description		string		`xml:"Description"`
@@ -105,7 +117,7 @@ type MsgFormatMusic struct {
 	ThumbMediaId	string		`xml:"ThumbMediaId"`
 }
 
-type MsgDecryptFormatArticles struct {
+type MsgReplyFormatArticles struct {
 	ToUserName		string		`xml:"ToUserName"`
 	FromUserName	string		`xml:"FromUserName"`
 	CreateTime		string		`xml:"CreateTime"`
@@ -113,11 +125,9 @@ type MsgDecryptFormatArticles struct {
 	ArticleCount	string		`xml:"ArticleCount"`
 	Articles		[]MsgFormatArticlesList	`xml:"Articles"`
 }
-
 type MsgFormatArticlesList struct {
 	item			[]MsgFormatArticlesItem		`xml:"item"`
 }
-
 type MsgFormatArticlesItem struct {
 	Title			string		`xml:"Title"`
 	Description		string		`xml:"Description"`

@@ -43,22 +43,86 @@ type MsgEncryptFormat struct {
 	Nonce			string		`xml:"Nonce"`
 }
 
-type MsgDecryptFormat struct {
+type MsgDecryptFormatText struct {
 	ToUserName		string		`xml:"ToUserName"`
 	FromUserName	string		`xml:"FromUserName"`
 	CreateTime		string		`xml:"CreateTime"`
 	MsgType			string		`xml:"MsgType"`
 	Content			string		`xml:"Content"`
-	MsgId			string		`xml:"MsgId"`
 }
 
-type MsgResponseFormat struct {
+type MsgDecryptFormatImage struct {
 	ToUserName		string		`xml:"ToUserName"`
 	FromUserName	string		`xml:"FromUserName"`
 	CreateTime		string		`xml:"CreateTime"`
 	MsgType			string		`xml:"MsgType"`
-	Content			string		`xml:"Content"`
-	FuncFlag		string		`xml:"FuncFlag"`
+	Image			[]MsgFormatImage	`xml:"Image"`
+}
+
+type MsgFormatImage struct {
+	MediaId			string		`xml:"MediaId"`
+}
+
+type MsgDecryptFormatVoice struct {
+	ToUserName		string		`xml:"ToUserName"`
+	FromUserName	string		`xml:"FromUserName"`
+	CreateTime		string		`xml:"CreateTime"`
+	MsgType			string		`xml:"MsgType"`
+	Voice			[]MsgFormatVoice	`xml:"Voice"`
+}
+
+type MsgFormatVoice struct {
+	MediaId			string		`xml:"MediaId"`
+}
+
+type MsgDecryptFormatVideo struct {
+	ToUserName		string		`xml:"ToUserName"`
+	FromUserName	string		`xml:"FromUserName"`
+	CreateTime		string		`xml:"CreateTime"`
+	MsgType			string		`xml:"MsgType"`
+	Video			[]MsgFormatVideo	`xml:"Video"`
+}
+
+type MsgFormatVideo struct {
+	MediaId			string		`xml:"MediaId"`
+	Title			string		`xml:"Title"`
+	Description		string		`xml:"Description"`
+}
+
+type MsgDecryptFormatMusic struct {
+	ToUserName		string		`xml:"ToUserName"`
+	FromUserName	string		`xml:"FromUserName"`
+	CreateTime		string		`xml:"CreateTime"`
+	MsgType			string		`xml:"MsgType"`
+	Music			[]MsgFormatMusic	`xml:"Music"`
+}
+
+type MsgFormatMusic struct {
+	Title			string		`xml:"Title"`
+	Description		string		`xml:"Description"`
+	MusicUrl		string		`xml:"MusicUrl"`
+	HQMusicUrl		string		`xml:"HQMusicUrl"`
+	ThumbMediaId	string		`xml:"ThumbMediaId"`
+}
+
+type MsgDecryptFormatArticles struct {
+	ToUserName		string		`xml:"ToUserName"`
+	FromUserName	string		`xml:"FromUserName"`
+	CreateTime		string		`xml:"CreateTime"`
+	MsgType			string		`xml:"MsgType"`
+	ArticleCount	string		`xml:"ArticleCount"`
+	Articles		[]MsgFormatArticlesList	`xml:"Articles"`
+}
+
+type MsgFormatArticlesList struct {
+	item			[]MsgFormatArticlesItem		`xml:"item"`
+}
+
+type MsgFormatArticlesItem struct {
+	Title			string		`xml:"Title"`
+	Description		string		`xml:"Description"`
+	PicUrl			string		`xml:"PicUrl"`
+	Url				string		`xml:"Url"`
 }
 
 /**

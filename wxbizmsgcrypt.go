@@ -43,6 +43,24 @@ type MsgEncryptFormat struct {
 	Nonce			string		`xml:"Nonce"`
 }
 
+type MsgDecryptFormat struct {
+	ToUserName		string		`xml:"ToUserName"`
+	FromUserName	string		`xml:"FromUserName"`
+	CreateTime		string		`xml:"CreateTime"`
+	MsgType			string		`xml:"MsgType"`
+	Content			string		`xml:"Content"`
+	MsgId			string		`xml:"MsgId"`
+}
+
+type MsgResponseFormat struct {
+	ToUserName		string		`xml:"ToUserName"`
+	FromUserName	string		`xml:"FromUserName"`
+	CreateTime		string		`xml:"CreateTime"`
+	MsgType			string		`xml:"MsgType"`
+	Content			string		`xml:"Content"`
+	FuncFlag		string		`xml:"FuncFlag"`
+}
+
 /**
  * 提取出xml数据包中的加密消息
  * @param string $xmltext 待提取的xml字符串

@@ -20,14 +20,15 @@ func IntToBytes4(n int) []byte {
 	bytesBuffer := bytes.NewBuffer([]byte{})
 	binary.Write(bytesBuffer, binary.BigEndian, m)
 	gbyte := bytesBuffer.Bytes()
+	return gbyte
 	//c++ 高低位转换
-	k := 4
+	/*k := 4
 	x := len(gbyte)
 	nb := make([]byte, k)
 	for i := 0; i < k; i++ {
 		nb[i] = gbyte[x-i-1]
 	}
-	return nb
+	return nb*/
 }
 
 //整形转换成字节2位
@@ -56,7 +57,7 @@ func IntToBytes4(n int) []byte {
 
 //4个字节转换成整形
 func Bytes4ToInt(b []byte) int {
-	xx := make([]byte, 4)
+	/*xx := make([]byte, 4)
 	if len(b) == 2 {
 		xx = []byte{b[0], b[1], 0, 0}
 	} else {
@@ -67,7 +68,8 @@ func Bytes4ToInt(b []byte) int {
 	for i := 0; i < 4; i++ {
 		nb[i] = xx[m-i-1]
 	}
-	bytesBuffer := bytes.NewBuffer(nb)
+	bytesBuffer := bytes.NewBuffer(nb)*/
+	bytesBuffer := bytes.NewBuffer(b)
 	var x int32
 	binary.Read(bytesBuffer, binary.BigEndian, &x)
 	return int(x)

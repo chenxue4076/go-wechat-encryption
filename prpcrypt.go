@@ -4,6 +4,7 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	cryptoRand "crypto/rand"
+	"encoding/base64"
 	"fmt"
 	"io"
 	"math/rand"
@@ -15,7 +16,12 @@ type Prpcrypt struct {
 }
 
 func PrpcryptDefault(key string) *Prpcrypt {
-	prpcrypt := &Prpcrypt{key}
+	keyByte, err := base64.StdEncoding.DecodeString(key+"=")
+	if err != nil {
+		fmt.Println("key Decode Error", err.Error())
+	}
+	prpcrypt := &Prpcrypt{string(keyByte)}
+	//fmt.Println("key Decode string", string(keyByte))
 	return prpcrypt
 }
 
@@ -25,7 +31,6 @@ func (p *Prpcrypt) Encrypt(text, appId string) (result []byte, errorCode int) {
 	random := p.randomStr()
 	//fmt.Println("Encrypt random",random)
 	pack := IntToBytes4(len(text))
-	//fmt.Println("Encrypt pack",pack)
 	//text = random + string(pack) + text + appId
 	textBytes := append([]byte(random), pack[:]...)
 	textBytes = append(textBytes, []byte(text)...)
@@ -42,9 +47,8 @@ func (p *Prpcrypt) Encrypt(text, appId string) (result []byte, errorCode int) {
 		errorCode = WXBizMsgCryptEncryptAESError
 		return
 	}
-	cipherText := make([]byte,aes.BlockSize+len(textOrigin))
 	//block大小 16
-	iv := cipherText[:aes.BlockSize]
+	iv := []byte(p.key)[:aes.BlockSize]
 	if _, err := io.ReadFull(cryptoRand.Reader,iv); err != nil {
 		fmt.Println("Encrypt iv err",err.Error())
 		errorCode = WXBizMsgCryptEncryptAESError
@@ -52,11 +56,11 @@ func (p *Prpcrypt) Encrypt(text, appId string) (result []byte, errorCode int) {
 	}
 	//fmt.Println("CBC Encrypt")
 	mode := cipher.NewCBCEncrypter(block, iv)
-	mode.CryptBlocks(cipherText[aes.BlockSize:], textOrigin)
+	mode.CryptBlocks(textOrigin, textOrigin)
 	//fmt.Println("Encrypt resultBytes",resultBytes)
 	//result = base64.StdEncoding.EncodeToString(resultBytes)
-	result = cipherText
-	//fmt.Println("Encrypt result",result)
+	result = textOrigin
+	fmt.Println("Encrypt result",result)
 	return
 }
 
@@ -71,12 +75,13 @@ func (p *Prpcrypt) Decrypt(encrypted []byte, appId string) (result []byte, error
 		return
 	}
 	//block大小 16
-	iv := encrypted[:aes.BlockSize]
-	encrypted = encrypted[aes.BlockSize:]
+	iv := []byte(p.key)[:aes.BlockSize]
+	//encrypted = encrypted[aes.BlockSize:]
 	if len(encrypted) % aes.BlockSize != 0 {
 		errorCode = WXBizMsgCryptIllegalBuffer
 		return
 	}
+	fmt.Println(len(encrypted))
 	mode := cipher.NewCBCDecrypter(block, iv)
 	mode.CryptBlocks(encrypted, encrypted)
 	encrypted = PKCS7EncoderDecode(encrypted)
@@ -85,6 +90,7 @@ func (p *Prpcrypt) Decrypt(encrypted []byte, appId string) (result []byte, error
 	xmlLen := Bytes4ToInt(encrypted[:4])
 	xmlContent := encrypted[4:xmlLen+4]
 	fromAppId := encrypted[xmlLen+4:]
+	fmt.Println(string(fromAppId))
 	if string(fromAppId) != appId {
 		errorCode = WXBizMsgCryptValidateAppidError
 		return

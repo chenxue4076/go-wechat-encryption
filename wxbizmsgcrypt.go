@@ -254,6 +254,6 @@ func (wx *WXBizMsgCrypt) DecryptMsg(msgSignature, timeStamp, nonce string, postD
 		errorCode = WXBizMsgCryptDecodeBase64Error
 	}
 	msg, errorCode = pc.Decrypt(encryptBytes, wx.appId)
-	//fmt.Println(toUserName)
+	fmt.Println("To User ",toUserName)
 	return
 }

@@ -60,7 +60,7 @@ func (p *Prpcrypt) Encrypt(text, appId string) (result []byte, errorCode int) {
 	//fmt.Println("Encrypt resultBytes",resultBytes)
 	//result = base64.StdEncoding.EncodeToString(resultBytes)
 	result = textOrigin
-	fmt.Println("Encrypt result",result)
+	//fmt.Println("Encrypt result",result)
 	return
 }
 
@@ -81,7 +81,7 @@ func (p *Prpcrypt) Decrypt(encrypted []byte, appId string) (result []byte, error
 		errorCode = WXBizMsgCryptIllegalBuffer
 		return
 	}
-	fmt.Println(len(encrypted))
+	//fmt.Println(len(encrypted))
 	mode := cipher.NewCBCDecrypter(block, iv)
 	mode.CryptBlocks(encrypted, encrypted)
 	encrypted = PKCS7EncoderDecode(encrypted)
@@ -90,7 +90,7 @@ func (p *Prpcrypt) Decrypt(encrypted []byte, appId string) (result []byte, error
 	xmlLen := Bytes4ToInt(encrypted[:4])
 	xmlContent := encrypted[4:xmlLen+4]
 	fromAppId := encrypted[xmlLen+4:]
-	fmt.Println(string(fromAppId))
+	//fmt.Println(string(fromAppId))
 	if string(fromAppId) != appId {
 		errorCode = WXBizMsgCryptValidateAppidError
 		return
